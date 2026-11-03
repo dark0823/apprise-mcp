@@ -15,10 +15,10 @@ Let your AI text your phone the second it finishes a long task, encounters an er
 
 ---
 
-### 📱 Live Demo (Claude Desktop Calling Telegram)
+### 📱 Live Demo (Claude Desktop &amp; Cursor Push Alert)
 
 <div align="center">
-  <img src="assets/telegram_demo.png" alt="Telegram Notification Demo" width="600" style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
+  <img src="assets/demo_banner.svg" alt="Apprise-MCP Live Demo" width="840" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);" />
 </div>
 
 > **What you prompt your AI:**  
