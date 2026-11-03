@@ -89,6 +89,34 @@ Add this block under `mcpServers`:
 ### 3. VS Code (Cline / Roo Code / Continue)
 Add the same JSON snippet to your `cline_mcp_settings.json`.
 
+### 4. OpenClaw & Agent Skill Framework
+`apprise-mcp` includes a native skill definition package under [`skills/openclaw/SKILL.md`](skills/openclaw/SKILL.md).  
+Autonomous agents can install it to trigger notifications automatically on task completion or error escalation.
+
+---
+
+## 💻 Universal CLI for Terminal & Shell Scripts
+
+`apprise-mcp` includes a standalone, zero-dependency CLI tool (`cli.py`) for developers, bash scripts, and headless agents:
+
+```bash
+# 1. Send single-channel alert
+python cli.py notify -u "tgram://BOT_TOKEN/CHAT_ID" -t "Build Finished" -b "Deployment succeeded."
+
+# 2. Multi-channel parallel broadcast (Telegram + Discord simultaneously)
+python cli.py notify \
+  -u "tgram://BOT_TOKEN/CHAT_ID" \
+  -u "discord://WEBHOOK_ID/WEBHOOK_TOKEN" \
+  -t "🚨 Critical Production Alert" \
+  -b "Database memory above 95%."
+
+# 3. JSON Output (optimized for AI agents and automated pipelines)
+python cli.py notify -u "tgram://..." -t "Alert" -b "Message" --json
+
+# 4. View popular channel syntax cheatsheet
+python cli.py channels
+```
+
 ---
 
 ## 🛠️ Popular Supported Channels

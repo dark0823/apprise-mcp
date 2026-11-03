@@ -1,0 +1,26 @@
+{
+  "name": "apprise-notifier",
+  "version": "0.1.0",
+  "description": "Universal notification and alert dispatcher for AI Agents. Supports 80+ platforms (Telegram, Discord, Slack, Email, WeCom, DingTalk, Twilio) via CLI or MCP.",
+  "author": "dark0823",
+  "homepage": "https://github.com/dark0823/apprise-mcp",
+  "entrypoints": {
+    "cli": "python cli.py notify",
+    "mcp": "server.py"
+  },
+  "parameters": {
+    "urls": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of Apprise channel target URLs"
+    },
+    "title": {
+      "type": "string",
+      "description": "Notification alert title"
+    },
+    "body": {
+      "type": "string",
+      "description": "Detailed notification message content"
+    }
+  }
+}

@@ -21,3 +21,4 @@ dependencies = [
 
 [project.scripts]
 apprise-mcp = "server:mcp.run"
+apprise-cli = "cli:main"
