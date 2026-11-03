@@ -95,6 +95,8 @@ Add the same JSON snippet to your `cline_mcp_settings.json`.
 
 `apprise-mcp` inherits the full power of [caronc/apprise](https://github.com/caronc/apprise), supporting over **80+ notification services and 160+ URL schemas**. 
 
+👉 **[View Complete List of All 161 Supported Services & URL Schemas](docs/SUPPORTED_CHANNELS.md)**
+
 Pass any combination of URLs, and your agent will broadcast to all of them simultaneously:
 
 | Service | Target URL Format | Example Use Case |
