@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "apprise-mcp"
+version = "0.1.0"
+description = "The Universal Notification & Alert Infrastructure for AI Agents. Powered by Apprise."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "dark0823" }
+]
+keywords = ["mcp", "claude", "cursor", "deepseek", "apprise", "notifications", "alerts", "agent"]
+dependencies = [
+    "apprise>=2.1.0",
+    "fastmcp>=0.1.0",
+    "pydantic>=2.0.0"
+]
+
+[project.scripts]
+apprise-mcp = "server:mcp.run"
