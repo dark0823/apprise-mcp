@@ -1,0 +1,13 @@
+{
+  "$schema": "https://glama.ai/schemas/mcp.json",
+  "name": "apprise-mcp",
+  "description": "Universal notification and alert infrastructure for AI Agents. Push to 80+ platforms (Telegram, Discord, Slack, Email) with one tool call.",
+  "maintainers": [
+    "dark0823"
+  ],
+  "categories": [
+    "communication",
+    "utilities",
+    "productivity"
+  ]
+}
