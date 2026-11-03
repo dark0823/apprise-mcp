@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apprise-MCP — Universal Notification Infrastructure for AI Agents</title>
+  <meta name="description" content="Never stare at your screen waiting for Claude or Cursor again. Give your AI Agent hands to text your phone, Discord, and Slack when tasks finish." />
+  
+  <!-- Inter Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            },
+            dark: {
+              900: '#0B0F19',
+              800: '#111827',
+              700: '#1F2937',
+              600: '#374151',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #0B0F19;
+      color: #F8FAFC;
+      font-family: 'Inter', sans-serif;
+    }
+    .gradient-glow {
+      background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.18) 0%, rgba(11, 15, 25, 0) 70%);
+    }
+    .glass-card {
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card:hover {
+      border-color: rgba(59, 130, 246, 0.4);
+    }
+    .neon-border {
+      box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.4);
+    }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-blue-500 selection:text-white">
+
+  <!-- Glow Background Effect -->
+  <div class="fixed inset-0 pointer-events-none gradient-glow z-0"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="sticky top-0 z-50 glass-card border-b border-white/5 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center font-black text-xl shadow-lg shadow-blue-500/20">
+          🚀
+        </div>
+        <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+          Apprise<span class="text-blue-500">-MCP</span>
+        </span>
+      </div>
+
+      <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+        <a href="#features" class="hover:text-blue-400 transition-colors">Features</a>
+        <a href="#simulator" class="hover:text-blue-400 transition-colors">Live Simulator</a>
+        <a href="#channels" class="hover:text-blue-400 transition-colors">161+ Channels</a>
+        <a href="#quickstart" class="hover:text-blue-400 transition-colors">Setup</a>
+        <a href="#pricing" class="hover:text-blue-400 transition-colors">Pricing</a>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <a href="https://github.com/dark0823/apprise-mcp" target="_blank" class="flex items-center space-x-2 text-sm text-slate-300 hover:text-white px-3 py-2 rounded-lg hover:bg-white/5 transition-all">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          <span class="hidden sm:inline">Star on GitHub</span>
+        </a>
+        <a href="#quickstart" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 font-semibold text-sm transition-all shadow-md shadow-blue-500/25">
+          Get Started
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative pt-20 pb-16 px-6 z-10">
+    <div class="max-w-5xl mx-auto text-center space-y-6">
+      
+      <!-- Top Announcement Pill -->
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-xs font-semibold text-blue-400">
+        <span class="flex h-2 w-2 rounded-full bg-blue-400 animate-ping"></span>
+        <span>Universal Model Context Protocol (MCP) Infrastructure</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight sm:leading-none">
+        Give Your AI Agent Hands to <br class="hidden sm:inline" />
+        <span class="bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-400 bg-clip-text text-transparent">
+          Ping Your Phone, Discord & Slack
+        </span>
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto font-normal">
+        Never stare at your terminal waiting for Claude or Cursor again. Stop babysitting long tasks—let your AI text your phone the moment code compiles, bugs are fixed, or trades execute.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+        <a href="#quickstart" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 font-bold text-base shadow-xl shadow-blue-600/25 transition-all transform hover:-translate-y-0.5">
+          Install Free in 30 Seconds
+        </a>
+        <a href="#simulator" class="w-full sm:w-auto px-8 py-3.5 rounded-xl glass-card hover:bg-white/10 font-semibold text-base transition-all border border-slate-700">
+          🎮 Try Live Simulator
+        </a>
+      </div>
+
+      <!-- Social Proof Stats -->
+      <div class="pt-12 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto border-t border-slate-800/80">
+        <div>
+          <div class="text-3xl font-extrabold text-white">80+</div>
+          <div class="text-xs text-slate-400 uppercase tracking-wider mt-1">Platforms Supported</div>
+        </div>
+        <div>
+          <div class="text-3xl font-extrabold text-blue-400">161+</div>
+          <div class="text-xs text-slate-400 uppercase tracking-wider mt-1">URL Schemas</div>
+        </div>
+        <div>
+          <div class="text-3xl font-extrabold text-cyan-400">0s</div>
+          <div class="text-xs text-slate-400 uppercase tracking-wider mt-1">Screen Babysitting</div>
+        </div>
+        <div>
+          <div class="text-3xl font-extrabold text-indigo-400">100%</div>
+          <div class="text-xs text-slate-400 uppercase tracking-wider mt-1">Open Source & Free</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Live Simulator Section -->
+  <section id="simulator" class="py-16 px-6 z-10 relative">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <span class="text-blue-400 text-xs font-bold uppercase tracking-widest">Interactive Experience</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">See It In Action</h2>
+        <p class="text-slate-400 text-sm mt-2">Choose which channels your AI should alert, enter a message, and test the trigger.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Controls Column -->
+        <div class="lg:col-span-6 glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-6">
+          <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+            <span>⚙️</span>
+            <span>Configure AI Dispatch Payload</span>
+          </h3>
+
+          <!-- Channel Checkboxes -->
+          <div>
+            <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Select Broadcast Channels</label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-3">
+              <label class="flex items-center space-x-2.5 p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 cursor-pointer hover:border-blue-500 transition-all">
+                <input type="checkbox" id="chk-tg" checked class="rounded text-blue-500 focus:ring-blue-500 bg-slate-900 border-slate-700" />
+                <span class="text-sm font-medium">Telegram</span>
+              </label>
+              <label class="flex items-center space-x-2.5 p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 cursor-pointer hover:border-blue-500 transition-all">
+                <input type="checkbox" id="chk-dc" checked class="rounded text-blue-500 focus:ring-blue-500 bg-slate-900 border-slate-700" />
+                <span class="text-sm font-medium">Discord</span>
+              </label>
+              <label class="flex items-center space-x-2.5 p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 cursor-pointer hover:border-blue-500 transition-all">
+                <input type="checkbox" id="chk-slack" class="rounded text-blue-500 focus:ring-blue-500 bg-slate-900 border-slate-700" />
+                <span class="text-sm font-medium">Slack</span>
+              </label>
+              <label class="flex items-center space-x-2.5 p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 cursor-pointer hover:border-blue-500 transition-all">
+                <input type="checkbox" id="chk-email" class="rounded text-blue-500 focus:ring-blue-500 bg-slate-900 border-slate-700" />
+                <span class="text-sm font-medium">Email (SMTP)</span>
+              </label>
+              <label class="flex items-center space-x-2.5 p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 cursor-pointer hover:border-blue-500 transition-all">
+                <input type="checkbox" id="chk-wecom" class="rounded text-blue-500 focus:ring-blue-500 bg-slate-900 border-slate-700" />
+                <span class="text-sm font-medium">WeCom (企微)</span>
+              </label>
+              <label class="flex items-center space-x-2.5 p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 cursor-pointer hover:border-blue-500 transition-all">
+                <input type="checkbox" id="chk-ding" class="rounded text-blue-500 focus:ring-blue-500 bg-slate-900 border-slate-700" />
+                <span class="text-sm font-medium">DingTalk (钉钉)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Alert Title -->
+          <div>
+            <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Alert Title</label>
+            <input type="text" id="sim-title" value="🚀 Full Test Suite Passed" class="mt-2 w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-blue-500 focus:outline-none" />
+          </div>
+
+          <!-- Alert Body -->
+          <div>
+            <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Message Body</label>
+            <textarea id="sim-body" rows="3" class="mt-2 w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-blue-500 focus:outline-none">All 64 tests passed in 14.2s. Zero security vulnerabilities found. Ready to deploy.</textarea>
+          </div>
+
+          <!-- Trigger Button -->
+          <button id="btn-simulate" onclick="triggerSimulation()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 font-bold text-white shadow-lg shadow-blue-500/20 transition-all">
+            ⚡ Simulate AI Tool Call
+          </button>
+        </div>
+
+        <!-- Simulated Screen Output -->
+        <div class="lg:col-span-6 space-y-4">
+          <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+            <span>Simulated Device View</span>
+            <span id="dispatch-badge" class="text-emerald-400 font-mono hidden">● Dispatched in 48ms</span>
+          </div>
+
+          <!-- Simulated Phone Card -->
+          <div class="glass-card p-5 rounded-2xl border border-slate-800 relative overflow-hidden">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 mb-4">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse"></span>
+                <span class="text-xs font-semibold text-slate-300">Telegram • Lockscreen Notification</span>
+              </div>
+              <span class="text-xs text-slate-500 font-mono">NOW</span>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-sky-500 flex items-center justify-center text-white font-bold flex-shrink-0 text-lg">
+                ✈️
+              </div>
+              <div>
+                <div id="disp-tg-title" class="text-sm font-bold text-white">🚀 Full Test Suite Passed</div>
+                <div id="disp-tg-body" class="text-xs text-slate-400 mt-1 leading-relaxed">All 64 tests passed in 14.2s. Zero security vulnerabilities found. Ready to deploy.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Simulated Discord Card -->
+          <div class="glass-card p-5 rounded-2xl border border-slate-800 relative overflow-hidden">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 mb-4">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span>
+                <span class="text-xs font-semibold text-slate-300">Discord • #dev-alerts Channel</span>
+              </div>
+              <span class="text-xs text-slate-500 font-mono">BOT</span>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold flex-shrink-0 text-lg">
+                🤖
+              </div>
+              <div class="w-full">
+                <div class="flex items-center space-x-2">
+                  <span class="text-sm font-bold text-white">Apprise-MCP</span>
+                  <span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded font-mono">BOT</span>
+                </div>
+                <div class="mt-2 p-3 rounded-lg bg-slate-900/80 border-l-4 border-blue-500">
+                  <div id="disp-dc-title" class="text-xs font-bold text-blue-400">🚀 Full Test Suite Passed</div>
+                  <div id="disp-dc-body" class="text-xs text-slate-300 mt-1">All 64 tests passed in 14.2s. Zero security vulnerabilities found. Ready to deploy.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section (Why You Need This) -->
+  <section id="features" class="py-16 px-6 z-10 relative">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="text-blue-400 text-xs font-bold uppercase tracking-widest">Pain Point vs Solution</span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-2">Why Developers Need This</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto text-sm mt-3">The gap between autonomous AI thinking and real-world execution.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Card 1 -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 transition-all hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-2xl mb-5">
+            ⏳
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Zero Screen Babysitting</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Stop waiting 10 minutes for Cursor Composer or Claude Code to finish big refactors. Tell it: <span class="text-slate-200">"Ping my phone when done"</span> and walk away freely.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 transition-all hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-2xl mb-5">
+            🚨
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">3:00 AM Incident Sirens</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Trading bots crashing? Web scrapers getting blocked by Cloudflare? Your AI dispatches instant push sirens to your Telegram or SMS before you wake up to losses.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 transition-all hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-2xl mb-5">
+            🌐
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">One Tool for 80+ Platforms</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Don't waste weeks writing custom API integrations for Telegram, Discord, Slack, Twilio, and Email. Apprise-MCP handles all 161 formats through one unified MCP call.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular Supported Channels Section -->
+  <section id="channels" class="py-16 px-6 z-10 relative bg-slate-900/30">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <span class="text-blue-400 text-xs font-bold uppercase tracking-widest">Ecosystem Matrix</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Connects to Everything You Use</h2>
+        <p class="text-slate-400 text-sm mt-2">Any combination can be broadcasted simultaneously in parallel.</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        
+        <div class="p-4 rounded-xl glass-card flex items-center space-x-3">
+          <span class="text-2xl">✈️</span>
+          <div>
+            <div class="font-bold text-sm text-white">Telegram</div>
+            <div class="text-xs text-slate-400 font-mono">tgram://</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl glass-card flex items-center space-x-3">
+          <span class="text-2xl">👾</span>
+          <div>
+            <div class="font-bold text-sm text-white">Discord</div>
+            <div class="text-xs text-slate-400 font-mono">discord://</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl glass-card flex items-center space-x-3">
+          <span class="text-2xl">💬</span>
+          <div>
+            <div class="font-bold text-sm text-white">Slack</div>
+            <div class="text-xs text-slate-400 font-mono">slack://</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl glass-card flex items-center space-x-3">
+          <span class="text-2xl">✉️</span>
+          <div>
+            <div class="font-bold text-sm text-white">Email (SMTP)</div>
+            <div class="text-xs text-slate-400 font-mono">mailto://</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl glass-card flex items-center space-x-3">
+          <span class="text-2xl">📱</span>
+          <div>
+            <div class="font-bold text-sm text-white">Pushover</div>
+            <div class="text-xs text-slate-400 font-mono">pover://</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl glass-card flex items-center space-x-3">
+          <span class="text-2xl">钉</span>
+          <div>
+            <div class="font-bold text-sm text-white">DingTalk (钉钉)</div>
+            <div class="text-xs text-slate-400 font-mono">dingtalk://</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl glass-card flex items-center space-x-3">
+          <span class="text-2xl">企</span>
+          <div>
+            <div class="font-bold text-sm text-white">WeCom (企业微信)</div>
+            <div class="text-xs text-slate-400 font-mono">wxwork://</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl glass-card flex items-center space-x-3">
+          <span class="text-2xl">飞</span>
+          <div>
+            <div class="font-bold text-sm text-white">Feishu / Lark</div>
+            <div class="text-xs text-slate-400 font-mono">feishu://</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl glass-card flex items-center space-x-3">
+          <span class="text-2xl">🔔</span>
+          <div>
+            <div class="font-bold text-sm text-white">Bark (iOS)</div>
+            <div class="text-xs text-slate-400 font-mono">bark://</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl glass-card flex items-center space-x-3">
+          <span class="text-2xl">🚨</span>
+          <div>
+            <div class="font-bold text-sm text-white">PagerDuty</div>
+            <div class="text-xs text-slate-400 font-mono">pagerduty://</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl glass-card flex items-center space-x-3">
+          <span class="text-2xl">📞</span>
+          <div>
+            <div class="font-bold text-sm text-white">Twilio (SMS)</div>
+            <div class="text-xs text-slate-400 font-mono">twilio://</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl glass-card flex items-center space-x-3">
+          <span class="text-2xl">🏠</span>
+          <div>
+            <div class="font-bold text-sm text-white">Home Assistant</div>
+            <div class="text-xs text-slate-400 font-mono">hassio://</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-8">
+        <a href="https://github.com/dark0823/apprise-mcp/blob/main/docs/SUPPORTED_CHANNELS.md" target="_blank" class="inline-flex items-center space-x-2 text-sm text-blue-400 hover:text-blue-300 font-medium">
+          <span>View all 161 supported protocols in official dictionary</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 30-Second Quickstart Setup Section -->
+  <section id="quickstart" class="py-16 px-6 z-10 relative">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <span class="text-blue-400 text-xs font-bold uppercase tracking-widest">30-Second Setup</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Connect in One Copy-Paste</h2>
+      </div>
+
+      <!-- Client Tabs -->
+      <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
+        <div class="flex border-b border-slate-800 bg-slate-900/50">
+          <button onclick="switchTab('claude')" id="tab-claude" class="px-6 py-3.5 text-sm font-semibold border-b-2 border-blue-500 text-white transition-all">
+            Claude Desktop / Cowork
+          </button>
+          <button onclick="switchTab('cursor')" id="tab-cursor" class="px-6 py-3.5 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all">
+            Cursor IDE
+          </button>
+          <button onclick="switchTab('vscode')" id="tab-vscode" class="px-6 py-3.5 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all">
+            VS Code (Cline / Roo)
+          </button>
+        </div>
+
+        <div class="p-6">
+          <div id="content-claude">
+            <p class="text-sm text-slate-400 mb-3">Add this snippet to your <code class="text-blue-400 font-mono">claude_desktop_config.json</code>:</p>
+            <pre class="bg-slate-950 p-4 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto border border-slate-800 leading-relaxed"><code>{
+  "mcpServers": {
+    "apprise-mcp": {
+      "command": "python",
+      "args": ["d:/your-path/apprise-mcp/server.py"]
+    }
+  }
+}</code></pre>
+          </div>
+
+          <div id="content-cursor" class="hidden">
+            <p class="text-sm text-slate-400 mb-3">Go to <strong>Settings</strong> → <strong>Features</strong> → <strong>MCP</strong> → <strong>+ Add New MCP Server</strong>:</p>
+            <div class="bg-slate-950 p-4 rounded-xl font-mono text-xs text-slate-200 border border-slate-800 space-y-2">
+              <div><span class="text-slate-500">Name:</span> apprise-mcp</div>
+              <div><span class="text-slate-500">Type:</span> command</div>
+              <div><span class="text-slate-500">Command:</span> python "d:/your-path/apprise-mcp/server.py"</div>
+            </div>
+          </div>
+
+          <div id="content-vscode" class="hidden">
+            <p class="text-sm text-slate-400 mb-3">Paste into your <code class="text-blue-400 font-mono">cline_mcp_settings.json</code>:</p>
+            <pre class="bg-slate-950 p-4 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto border border-slate-800 leading-relaxed"><code>{
+  "mcpServers": {
+    "apprise-mcp": {
+      "command": "python",
+      "args": ["d:/your-path/apprise-mcp/server.py"]
+    }
+  }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Commercial Pricing Section (The Postiz Model) -->
+  <section id="pricing" class="py-16 px-6 z-10 relative bg-slate-900/20">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="text-blue-400 text-xs font-bold uppercase tracking-widest">Fair Transparent Pricing</span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-2">Pick Your Deployment Model</h2>
+        <p class="text-slate-400 text-sm mt-3">Free and open source for self-hosters. Managed zero-friction cloud for teams.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+        
+        <!-- Community Plan -->
+        <div class="glass-card p-8 rounded-2xl border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="text-sm font-bold text-slate-400 uppercase tracking-wider">Community Open Source</div>
+            <div class="text-4xl font-extrabold text-white mt-4">$0 <span class="text-sm text-slate-500 font-normal">/ forever</span></div>
+            <p class="text-xs text-slate-400 mt-2">Self-host on your personal machine with Python.</p>
+
+            <ul class="space-y-3 mt-6 text-sm text-slate-300">
+              <li class="flex items-center space-x-2"><span>✓</span><span>All 161+ URL Schemas</span></li>
+              <li class="flex items-center space-x-2"><span>✓</span><span>100% Free MIT License</span></li>
+              <li class="flex items-center space-x-2"><span>✓</span><span>Local stdio FastMCP Server</span></li>
+              <li class="flex items-center space-x-2"><span>✓</span><span>Unlimited Local Executions</span></li>
+            </ul>
+          </div>
+
+          <a href="https://github.com/dark0823/apprise-mcp" target="_blank" class="mt-8 block text-center py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold text-sm transition-all border border-slate-700">
+            Download on GitHub
+          </a>
+        </div>
+
+        <!-- Pro Cloud Plan (Highlighted) -->
+        <div class="glass-card p-8 rounded-2xl border-2 border-blue-500 relative flex flex-col justify-between neon-border bg-gradient-to-b from-blue-950/20 to-slate-900/60">
+          <div class="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            Most Popular • Zero Setup
+          </div>
+
+          <div>
+            <div class="text-sm font-bold text-blue-400 uppercase tracking-wider">Hosted Cloud Gateway</div>
+            <div class="text-4xl font-extrabold text-white mt-4">$19 <span class="text-sm text-slate-400 font-normal">/ month</span></div>
+            <p class="text-xs text-slate-300 mt-2">No Python needed. 24/7 cloud endpoint with one API key.</p>
+
+            <ul class="space-y-3 mt-6 text-sm text-slate-200">
+              <li class="flex items-center space-x-2"><span class="text-blue-400">✓</span><span>Remote SSE MCP Endpoint URL</span></li>
+              <li class="flex items-center space-x-2"><span class="text-blue-400">✓</span><span>24/7 High-Availability Cloud</span></li>
+              <li class="flex items-center space-x-2"><span class="text-blue-400">✓</span><span>Encrypted Credential Vault</span></li>
+              <li class="flex items-center space-x-2"><span class="text-blue-400">✓</span><span>Automatic Failure Retry Queue</span></li>
+              <li class="flex items-center space-x-2"><span class="text-blue-400">✓</span><span>Up to 50,000 Alerts / month</span></li>
+            </ul>
+          </div>
+
+          <button onclick="alert('Cloud Gateway is launching soon! Star on GitHub to get early bird access.')" class="mt-8 block text-center py-3 rounded-xl bg-blue-600 hover:bg-blue-500 font-bold text-sm text-white shadow-lg shadow-blue-500/30 transition-all">
+            Join Early Access ($19/mo)
+          </button>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="glass-card p-8 rounded-2xl border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="text-sm font-bold text-slate-400 uppercase tracking-wider">Team & Enterprise</div>
+            <div class="text-4xl font-extrabold text-white mt-4">$49 <span class="text-sm text-slate-500 font-normal">/ month</span></div>
+            <p class="text-xs text-slate-400 mt-2">For algorithmic trading desks and engineering teams.</p>
+
+            <ul class="space-y-3 mt-6 text-sm text-slate-300">
+              <li class="flex items-center space-x-2"><span>✓</span><span>Unlimited Monthly Dispatches</span></li>
+              <li class="flex items-center space-x-2"><span>✓</span><span>Multi-Seat Team Access</span></li>
+              <li class="flex items-center space-x-2"><span>✓</span><span>Audit Trail & Webhook Delivery Logs</span></li>
+              <li class="flex items-center space-x-2"><span>✓</span><span>Dedicated High-Speed Static IP</span></li>
+              <li class="flex items-center space-x-2"><span>✓</span><span>Priority Telegram / SLA Support</span></li>
+            </ul>
+          </div>
+
+          <button onclick="alert('Please contact sales via GitHub issue or email.')" class="mt-8 block text-center py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold text-sm transition-all border border-slate-700">
+            Contact Enterprise Sales
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 py-12 px-6 relative z-10 text-center text-xs text-slate-500 space-y-3">
+    <div class="flex items-center justify-center space-x-6">
+      <a href="https://github.com/dark0823/apprise-mcp" target="_blank" class="hover:text-slate-300 transition-colors">GitHub</a>
+      <a href="https://github.com/dark0823/apprise-mcp/blob/main/docs/SUPPORTED_CHANNELS.md" target="_blank" class="hover:text-slate-300 transition-colors">161 Channels</a>
+      <a href="https://github.com/caronc/apprise" target="_blank" class="hover:text-slate-300 transition-colors">Powered by Apprise</a>
+      <a href="https://github.com/dark0823/apprise-mcp/blob/main/LICENSE" target="_blank" class="hover:text-slate-300 transition-colors">MIT License</a>
+    </div>
+    <p>© 2026 Apprise-MCP by <span class="text-slate-400 font-medium">dark0823</span>. Built with ❤️ for the AI Agent Community.</p>
+  </footer>
+
+  <!-- Interactive JavaScript for Simulator & Tabs -->
+  <script>
+    function triggerSimulation() {
+      const title = document.getElementById('sim-title').value;
+      const body = document.getElementById('sim-body').value;
+      
+      document.getElementById('disp-tg-title').innerText = title;
+      document.getElementById('disp-tg-body').innerText = body;
+      
+      document.getElementById('disp-dc-title').innerText = title;
+      document.getElementById('disp-dc-body').innerText = body;
+
+      const badge = document.getElementById('dispatch-badge');
+      badge.classList.remove('hidden');
+      badge.innerText = `● Dispatched in ${Math.floor(Math.random() * 25 + 35)}ms`;
+    }
+
+    function switchTab(client) {
+      document.getElementById('content-claude').classList.add('hidden');
+      document.getElementById('content-cursor').classList.add('hidden');
+      document.getElementById('content-vscode').classList.add('hidden');
+
+      document.getElementById('tab-claude').className = 'px-6 py-3.5 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all';
+      document.getElementById('tab-cursor').className = 'px-6 py-3.5 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all';
+      document.getElementById('tab-vscode').className = 'px-6 py-3.5 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all';
+
+      if (client === 'claude') {
+        document.getElementById('content-claude').classList.remove('hidden');
+        document.getElementById('tab-claude').className = 'px-6 py-3.5 text-sm font-semibold border-b-2 border-blue-500 text-white transition-all';
+      } else if (client === 'cursor') {
+        document.getElementById('content-cursor').classList.remove('hidden');
+        document.getElementById('tab-cursor').className = 'px-6 py-3.5 text-sm font-semibold border-b-2 border-blue-500 text-white transition-all';
+      } else if (client === 'vscode') {
+        document.getElementById('content-vscode').classList.remove('hidden');
+        document.getElementById('tab-vscode').className = 'px-6 py-3.5 text-sm font-semibold border-b-2 border-blue-500 text-white transition-all';
+      }
+    }
+  </script>
+</body>
+</html>
